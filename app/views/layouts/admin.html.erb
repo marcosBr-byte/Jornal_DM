@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth motion-reduce:scroll-auto">
   <head><%= render "shared/head" %></head>
-  <body data-controller="theme form-validation live-updates" data-admin-layout="true" class="m-0 min-h-screen bg-[#f4f7fa] font-sans text-dm-ink antialiased dark:bg-[#0d1d2b] dark:text-[#e8eff4] [&_button]:cursor-pointer [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-4 [&_a]:focus-visible:outline-[#79a9c7] motion-reduce:[&_*]:transition-none">
+  <body data-controller="theme motion form-validation live-updates" data-admin-layout="true" class="m-0 min-h-screen bg-[#f4f7fa] font-sans text-dm-ink antialiased dark:bg-[#0d1d2b] dark:text-[#e8eff4] [&_button]:cursor-pointer [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-4 [&_a]:focus-visible:outline-[#79a9c7] motion-reduce:[&_*]:transition-none">
     <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:p-3 focus:text-dm-ink">Pular para o conteúdo</a>
     <%= render "admin/shared/nav" %>
     <%= render "shared/verification" if @verified_login %>

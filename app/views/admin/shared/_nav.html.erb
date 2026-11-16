@@ -10,7 +10,7 @@
     <span class="flex items-center gap-2 text-[9px] text-[#c1d0da] max-[850px]:hidden">
       <i class="inline-block size-[7px] rounded-full bg-[#4b9a7a] shadow-[0_0_0_4px_#4b9a7a1c]"></i> Sessão ativa
     </span>
-    <button id="themeToggle" type="button" class="icon-button theme-button" data-theme-target="toggle" data-action="theme#toggle" aria-label="Ativar tema escuro" title="Alternar tema">☾</button>
+    <button type="button" class="icon-button motion-button" data-motion-target="toggle" data-action="motion#toggle" aria-label="Pausar animações" aria-pressed="false" title="Pausar animações">Ⅱ</button><button id="themeToggle" type="button" class="icon-button theme-button" data-theme-target="toggle" data-action="theme#toggle" aria-label="Ativar tema escuro" title="Alternar tema">☾</button>
     <%= button_to "Sair ↗", destroy_user_session_path, method: :delete, class: "rounded-[3px] border border-[#ffffff2b] bg-[#ffffff12] px-[13px] py-[9px] text-[9px] text-white hover:bg-[#ffffff25]" %>
   </div>
 </header>

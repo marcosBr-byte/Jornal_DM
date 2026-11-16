@@ -4,14 +4,13 @@ export default class extends Controller {
   static values = {interval: {type: Number, default: 5000}}
   connect() {
     this.index = 0; this.manualPause = false; this.hovered = false; this.focused = false
-    this.media = window.matchMedia("(prefers-reduced-motion: reduce)")
     this.onMotion = () => this.start()
     this.onVisibility = () => document.hidden ? this.stop() : this.start()
-    this.media.addEventListener("change", this.onMotion); document.addEventListener("visibilitychange", this.onVisibility)
+    document.addEventListener("site-motion:change", this.onMotion); document.addEventListener("visibilitychange", this.onVisibility)
     this.show(); this.start()
   }
-  disconnect() { this.stop(); this.media.removeEventListener("change", this.onMotion); document.removeEventListener("visibilitychange", this.onVisibility) }
-  start() { this.stop(); if (this.slideTargets.length > 1 && !this.manualPause && !this.hovered && !this.focused && !this.media.matches && !document.hidden) this.timer = setInterval(() => this.advance(1), this.intervalValue) }
+  disconnect() { this.stop(); document.removeEventListener("site-motion:change", this.onMotion); document.removeEventListener("visibilitychange", this.onVisibility) }
+  start() { this.stop(); if (this.slideTargets.length > 1 && !this.manualPause && !this.hovered && !this.focused && document.documentElement.dataset.siteMotion !== "paused" && !document.hidden) this.timer = setInterval(() => this.advance(1), this.intervalValue) }
   stop() { clearInterval(this.timer) }
   advance(direction) { this.index = (this.index + direction + this.slideTargets.length) % this.slideTargets.length; this.show() }
   show(announce = false) { this.slideTargets.forEach((slide, i) => {slide.hidden = i !== this.index}); this.dotTargets.forEach((dot, i) => dot.setAttribute("aria-current", String(i === this.index))); if (announce && this.hasStatusTarget) this.statusTarget.textContent = `Destaque ${this.index + 1} de ${this.slideTargets.length}` }

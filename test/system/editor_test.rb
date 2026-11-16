@@ -35,7 +35,7 @@ class EditorTest < ApplicationSystemTestCase
     page.execute_script("document.querySelector('trix-editor').editor.setSelectedRange([0, 8])")
     find("button[data-trix-attribute=bold]").click
     click_on "Publicar notícia →"
-    assert_text "Publicação salva."
+    assert_text "Publicação salva.", wait: 10
     article = Article.find_by!(title: "Reportagem pelo editor")
     assert_includes article.body, "<strong>Conteúdo</strong>"
     visit article_path(article)
