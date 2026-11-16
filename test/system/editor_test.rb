@@ -10,7 +10,16 @@ class EditorTest < ApplicationSystemTestCase
     fill_in "E-MAIL", with: @admin.email
     fill_in "SENHA", with: "BrowserPassword123!"
     click_on "Entrar no painel →"
-    assert_selector "aside", text: "MENU PRINCIPAL"
+    assert_selector "aside", text: "MENU PRINCIPAL", wait: 10
+    assert_no_selector ".verification-overlay", wait: 5
+    page.execute_script("localStorage.setItem('jornaldm_theme', 'light')")
+    page.refresh
+    assert_selector "#themeToggle.icon-button.theme-button", count: 1
+    assert_no_selector "[data-theme-target=label]"
+    find("#themeToggle").click
+    assert_selector "html.dark"
+    find("#themeToggle").click
+    assert_no_selector "html.dark"
     begin
       assert_selector "trix-editor[contenteditable]:not([contenteditable=false])", wait: 10
     rescue Minitest::Assertion

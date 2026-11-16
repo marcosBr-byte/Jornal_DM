@@ -4,9 +4,9 @@
 @source "../../helpers";
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
-  --font-sans: "DM Sans", sans-serif;
-  --font-display: "Manrope", sans-serif;
-  --font-editorial: Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Lora", Georgia, serif;
+  --font-editorial: "Lora", Georgia, serif;
   --color-dm-ink: #14283d;
   --color-dm-blue: #244e72;
   --color-dm-paper: #f7f9fb;

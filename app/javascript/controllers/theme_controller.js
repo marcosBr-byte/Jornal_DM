@@ -5,9 +5,21 @@ export default class extends Controller {
 
   connect() {
     let dark = false
-    try { dark = localStorage.getItem("jornaldm_theme") === "dark" } catch {}
+    try {
+      const saved = localStorage.getItem("jornaldm_theme")
+      dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches
+    } catch { dark = window.matchMedia("(prefers-color-scheme: dark)").matches }
     this.apply(dark)
+    this.media = window.matchMedia("(prefers-color-scheme: dark)")
+    this.onSystemChange = event => {
+      let saved
+      try { saved = localStorage.getItem("jornaldm_theme") } catch {}
+      if (!saved) this.apply(event.matches)
+    }
+    this.media.addEventListener("change", this.onSystemChange)
   }
+
+  disconnect() { this.media?.removeEventListener("change", this.onSystemChange) }
 
   toggle() {
     const dark = !document.documentElement.classList.contains("dark")

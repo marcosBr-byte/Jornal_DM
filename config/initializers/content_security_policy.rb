@@ -9,7 +9,7 @@ Rails.application.configure do
     # Trix uses inline style attributes for editing; scripts still require a nonce.
     policy.style_src :self, :unsafe_inline, "https://fonts.googleapis.com"
     policy.font_src :self, "https://fonts.gstatic.com"
-    policy.img_src :self, :data
+    policy.img_src :self, :data, :blob
     policy.connect_src :self
     policy.upgrade_insecure_requests if Rails.env.production?
   end

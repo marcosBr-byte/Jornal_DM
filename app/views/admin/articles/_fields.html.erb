@@ -1,3 +1,7 @@
+<div class="mb-4">
+<%= f.label :environment, "AMBIENTE DE PUBLICAÇÃO", class: editor_label_classes %>
+<%= f.select :environment, allowed_environments.map { |key| [EditorialEnvironment::ENVIRONMENTS[key], key] }, {}, class: editor_input_classes, data: {editorial_form_target: "environment", action: "change->editorial-form#update"} %>
+</div>
 <div class="grid grid-cols-2 gap-[15px] max-sm:grid-cols-1">
   <div class="col-span-2 max-sm:col-span-1">
     <%= f.label :title, "TÍTULO DA NOTÍCIA *", class: editor_label_classes %>
@@ -5,11 +9,16 @@
   </div>
   <div>
     <%= f.label :category, "CATEGORIA", class: editor_label_classes %>
-    <%= f.select :category, Article::CATEGORIES, {}, class: editor_input_classes %>
+    <%= f.select :category, (Article::CATEGORIES + Category.where(environment: allowed_environments).order(:name).pluck(:name)).uniq, {}, class: editor_input_classes, data: {editorial_form_target: "category"} %>
   </div>
   <div>
     <%= f.label :author, "AUTOR / REDAÇÃO", class: editor_label_classes %>
     <%= f.text_field :author, required: true, placeholder: "Ex.: Redação Jornal DM", class: editor_input_classes %>
+  </div>
+  <div>
+    <%= f.label :published_at, "DATA E HORÁRIO DA PUBLICAÇÃO (FORTALEZA)", class: editor_label_classes %>
+    <%= f.datetime_local_field :published_at, class: editor_input_classes %>
+    <small>Deixe vazio para publicar agora. Datas futuras agendam a exibição pública.</small>
   </div>
   <div class="col-span-2 max-sm:col-span-1">
     <%= f.label :summary, "RESUMO", class: editor_label_classes %>
@@ -19,11 +28,15 @@
     <%= render "admin/articles/rich_editor", f: f, article: @article %>
   </div>
   <div class="col-span-2 max-sm:col-span-1">
+    <div data-controller="cover-preview">
     <%= f.label :cover, "IMAGEM DE CAPA", class: editor_label_classes %>
-    <%= f.file_field :cover, accept: "image/jpeg,image/png,image/webp", class: class_names(editor_input_classes, "file:mr-3 file:rounded file:border-0 file:bg-dm-pale file:px-3 file:py-1 file:text-dm-blue") %>
-    <small class="mt-1.5 block text-[8px] text-[#9aa6b0]">JPEG, PNG ou WebP de até 1,5 MB.</small>
+    <%= f.file_field :cover, accept: "image/jpeg,image/png,image/webp", data: {action: "change->cover-preview#show"}, class: class_names(editor_input_classes, "file:mr-3 file:rounded file:border-0 file:bg-dm-pale file:px-3 file:py-1 file:text-dm-blue") %>
+    <img data-cover-preview-target="image" hidden alt="Prévia da nova capa" class="dm-photo">
+    </div>
+    <small class="mt-1.5 block text-[8px] text-[#9aa6b0]">JPEG, PNG ou WebP de até 10 MB. A nova capa será otimizada automaticamente.</small>
     <% if @article.cover.attached? && @article.cover.persisted? %>
-      <%= image_tag cover_article_path(@article), alt: "Capa atual", class: "mt-2 max-h-[100px] max-w-40 border border-[#e3eaf0] object-cover dark:border-[#355267]" %>
+      <% if @article.cover.metadata["original_bytes"].present? %><p>Original: <%= number_to_human_size(@article.cover.metadata["original_bytes"]) %> · Otimizada: <%= number_to_human_size(@article.cover.byte_size) %> · WebP</p><% end %>
+      <%= image_tag editorial_cover_path(@article), alt: "Capa atual", class: "mt-2 max-h-[100px] max-w-40 border border-[#e3eaf0] object-cover dark:border-[#355267]" %>
     <% end %>
   </div>
   <label class="col-span-2 flex items-center gap-[9px] text-[10px] text-[#63798b] dark:text-[#b4c5d1] max-sm:col-span-1">

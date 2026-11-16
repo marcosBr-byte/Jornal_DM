@@ -30,7 +30,18 @@ amazon:
   service: S3
   region: <%= ENV.fetch("AWS_REGION", "us-east-1") %>
   bucket: <%= ENV.fetch("S3_BUCKET", "jornal-dm") %>
+  access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
 
 # Persistent covers on a single external PostgreSQL (Render + Neon).
 database:
   service: Database
+
+r2:
+  service: S3
+  endpoint: <%= ENV["R2_ENDPOINT"] %>
+  region: auto
+  bucket: <%= ENV.fetch("R2_BUCKET", "jornal-dm") %>
+  access_key_id: <%= ENV["R2_ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["R2_SECRET_ACCESS_KEY"] %>
+  force_path_style: true

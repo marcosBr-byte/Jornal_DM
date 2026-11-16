@@ -3,12 +3,27 @@
 </title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#10243a">
-<meta name="description" content="Jornal DM — informação, educação e comunidade.">
+<meta name="description" content="<%= @article&.persisted? ? @article.summary.presence || truncate(@article.body_text, length: 160) : "#{environment_name} — informação, educação e comunidade." %>">
+<meta property="og:title" content="<%= @article&.persisted? ? @article.title : environment_name %>">
+<meta property="og:description" content="<%= @article&.persisted? ? @article.summary : "Informação, educação e comunidade." %>">
+<meta property="og:type" content="<%= @article&.persisted? ? "article" : "website" %>">
+<meta property="og:site_name" content="<%= environment_name %>">
+<meta property="og:url" content="<%= request.original_url %>">
+<% if @article&.persisted? && @article.cover.attached? %><meta property="og:image" content="<%= "#{request.base_url}#{editorial_cover_path(@article)}" %>"><% end %>
+<% if controller_path == "articles" && action_name == "show" && @article&.persisted? %>
+<% structured_data = {"@context" => "https://schema.org", "@type" => "NewsArticle", "headline" => @article.title, "description" => @article.summary, "datePublished" => @article.published_at&.iso8601, "dateModified" => @article.updated_at.iso8601, "author" => {"@type" => "Organization", "name" => @article.author}, "publisher" => {"@type" => "Organization", "name" => environment_name}, "mainEntityOfPage" => "#{request.base_url}#{editorial_article_path(@article)}"} %>
+<%= tag.script ERB::Util.json_escape(structured_data.to_json).html_safe, type: "application/ld+json", nonce: content_security_policy_nonce %>
+<% end %>
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<%= favicon_link_tag "logo_escola.jpeg", type: "image/jpeg" %>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<%= favicon_link_tag "jornal_dm_logo.png", type: "image/png" %>
+<%= javascript_tag nonce: true do %>
+try { const savedTheme = localStorage.getItem("jornaldm_theme"); document.documentElement.classList.toggle("dark", savedTheme ? savedTheme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches); } catch {}
+<% end %>
 <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "interactive", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "newsroom", "data-turbo-track": "reload" %>
 <%= javascript_importmap_tags %>

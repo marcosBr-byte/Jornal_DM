@@ -1,0 +1,8 @@
+<%= render "pages/ticker" %>
+<% if current_environment == "dm" %>
+<section class="dm-wrap brand-hero" aria-label="Jornal DM, a voz da escola"><div class="brand-art brand-logo"><%= image_tag "jornal_dm_logo.png", alt: "Logo do Jornal DM", width: 1448, height: 1086, class: "floating-logo" %><span>A VOZ DA NOSSA COMUNIDADE</span></div><div class="brand-copy"><span class="section-kicker">JORNALISMO ESCOLAR</span><h1>A nossa escola<br>tem muito a <em>contar.</em></h1><p>Histórias, descobertas e conquistas.<br>Um olhar atento para o que nos conecta.</p><%= link_to "Descubra as últimas notícias ↗", articles_path, class: "text-action" %></div></section>
+<% else %>
+<section class="dm-wrap event-hero"><div><span class="section-kicker">FECT · COBERTURA ESPECIAL</span><h1>Ideias que conectam.<br><em>Conhecimento que transforma.</em></h1><p>Projetos, descobertas e os protagonistas do evento. Acompanhe a cobertura do FECT pelo olhar do Jornal DM.</p><%= link_to "Acompanhe as notícias ↗", fect_articles_path, class: "text-action" %></div><div class="event-seal"><%= image_tag "jornal_dm_logo.png", alt: "Cobertura do Jornal DM", width: 1448, height: 1086 %><span>CIÊNCIA · CULTURA · TECNOLOGIA</span></div></section>
+<% end %>
+<div id="news-highlights" class="dm-wrap" data-live-region><%= render "pages/highlights" %></div>
+<%= render "articles/list", home: true %>

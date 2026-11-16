@@ -1,3 +1,4 @@
+<%= render "admin/shared/environment_filter" %>
 <% content_for :title, "Publicações | Jornal DM" %>
 <%= render "list", articles: @articles, published_count: @published_count, draft_count: @draft_count %>
 <nav class="my-6 flex gap-6 text-xs" aria-label="Paginação">

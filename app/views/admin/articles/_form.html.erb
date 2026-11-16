@@ -11,7 +11,7 @@
   <% if @article.errors.any? %>
     <div class="mb-4 border border-[#a32f39]/30 p-4 text-xs text-[#a32f39] dark:text-[#f5aaaa]" role="alert"><%= @article.errors.full_messages.join(". ") %></div>
   <% end %>
-  <%= form_with model: [:admin, @article] do |f| %>
+  <%= form_with model: [:admin, @article], data: {controller: "editorial-form", editorial_form_categories_value: allowed_environments.to_h { |key| [key, Article.category_names(key)] }} do |f| %>
     <%= f.hidden_field :lock_version %>
     <%= render "admin/articles/fields", f: f %>
     <%= render "admin/articles/actions", embedded: embedded %>

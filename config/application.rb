@@ -11,6 +11,9 @@ module JornalDm20Completo
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
     config.time_zone = "America/Fortaleza"
+    config.i18n.default_locale = :"pt-BR"
+    config.i18n.available_locales = [ :"pt-BR", :en ]
+    config.i18n.fallbacks = [ :en ]
     # All covers are served through CoversController; default blob/direct-upload
     # routes would bypass publication and administrator permissions.
     config.active_storage.draw_routes = false

@@ -1,0 +1,24 @@
+<section class="dm-panel" data-controller="engagement">
+  <div class="dm-actions" id="article-reactions" data-live-region>
+    <button type="button" class="dm-button" data-action="engagement#like" data-url="<%= editorial_article_path(@article) %>/curtir" aria-pressed="<%= @liked ? "true" : "false" %>"><span data-engagement-target="heart"><%= @liked ? "♥" : "♡" %></span> <span data-engagement-target="count"><%= @article.likes.count %></span> curtidas</button>
+    <button type="button" class="dm-button" data-action="engagement#share">Compartilhar notícia ↗</button>
+  </div>
+  <p role="status" data-engagement-target="message"></p>
+  <h2>Converse com a comunidade</h2>
+  <p>Seu comentário aparece na hora. Termos inadequados são removidos automaticamente; comentários podem ser denunciados.</p>
+  <%= form_with url: "#{editorial_article_path(@article)}/comentarios", scope: :comment, class: "dm-form" do |f| %>
+    <%= f.label :name, "Nome (opcional)" %>
+    <%= f.text_field :name, maxlength: 80, placeholder: "Como gostaria de ser identificado?" %>
+    <%= f.label :body, "Comentário" %>
+    <%= f.text_area :body, required: true, maxlength: 3000, rows: 4, placeholder: "Escreva seu comentário…" %>
+    <div hidden aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <%= f.submit "Publicar comentário", class: "dm-button" %>
+  <% end %>
+  <div id="article-comments" data-live-region>
+  <% @comments.each do |comment| %>
+    <article class="dm-panel"><strong><%= comment.display_name %></strong> · <time><%= l(comment.created_at, format: :short) %></time><%= simple_format(h(comment.display_body), {}, sanitize: false) %>
+    <%= button_to "Denunciar", "#{editorial_article_path(@article)}/comentarios/#{comment.id}/denunciar", class: "dm-link" %></article>
+  <% end %>
+  <% if @comments.empty? %><p>Seja a primeira pessoa a comentar.</p><% end %>
+  </div>
+</section>

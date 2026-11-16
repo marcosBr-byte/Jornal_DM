@@ -1,0 +1,1 @@
+<%= form_with url: request.path, method: :get, class: "dm-form" do |f| %><%= f.label :environment, "Filtrar por ambiente" %><%= f.select :environment, [["Todos os ambientes permitidos", ""]] + allowed_environments.map { |key| [EditorialEnvironment::ENVIRONMENTS[key], key] }, selected: params[:environment] %><%= f.submit "Filtrar", class: "dm-button" %><% end %>

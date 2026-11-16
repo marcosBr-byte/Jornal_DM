@@ -1,3 +1,4 @@
+<div id="agenda-content" data-live-region>
 <% content_for :title, "Agenda | Jornal DM" %>
     <section class="mx-auto w-[calc(100%-48px)] max-w-[1160px] max-sm:w-[calc(100%-32px)] pt-[75px] pb-[85px]" id="agenda">
       <div class="mb-[30px] flex items-end justify-between gap-4 max-sm:flex-wrap [&_h1]:mt-[11px] [&_h1]:mb-1.5 [&_h1]:font-display [&_h1]:text-4xl [&_h1]:font-extrabold [&_h1]:tracking-[-1.5px] [&_h1_em]:font-editorial [&_h1_em]:font-normal [&_h1_em]:text-[#5d89a8] [&_p]:m-0 [&_p]:text-xs [&_p]:text-[#8794a1]">
@@ -5,7 +6,7 @@
 <div class="flex items-center gap-[9px] text-[9px] font-extrabold tracking-[2px] text-[#64829b] [&>span]:h-0.5 [&>span]:w-[22px] [&>span]:bg-[#6c96b2]">
 <span>
 </span> FIQUE ATENTO</div>
-<h1>Agenda <em>DM</em>
+<h1>Agenda <em><%= current_environment == "fect" ? "FECT" : "DM" %></em>
 </h1>
 <p>Datas e comunicados importantes da comunidade escolar.</p>
 </div>
@@ -22,9 +23,13 @@
 </div>
 <span class="text-[22px] text-[#6f91a8]">↗</span>
 </div>
+<div class="dm-actions"><%= link_to "Próximos eventos", url_for(period: nil), class: "dm-button" %><%= link_to "Eventos anteriores", url_for(period: "past"), class: "dm-button" %></div>
+<% @events.each do |event| %><article class="dm-panel"><h2><%= event.title %></h2><% if event.image.attached? %><%= image_tag "#{current_environment == "fect" ? "/fect" : ""}/eventos/#{event.id}/imagem?size=1200&v=#{event.updated_at.to_f}", alt: event.title, width: 1200, height: 800, loading: "lazy", class: "dm-photo" %><% end %><p><time datetime="<%= event.starts_at.iso8601 %>"><%= event.starts_at.strftime("%d/%m/%Y às %H:%M") %></time> · <%= event.location %></p><p><%= event.category %></p><%= simple_format(h(event.description), {}, sanitize: false) %></article><% end %><% if @events.empty? %><p class="dm-panel">Nenhum evento cadastrado para este período.</p><% end %>
     </section>
 <section class="mx-auto w-[calc(100%-48px)] max-w-[1160px] max-sm:w-[calc(100%-32px)] grid grid-cols-3 gap-5 pt-10 pb-[60px] max-[850px]:grid-cols-2 max-sm:grid-cols-1">
 <% @articles.each do |article| %>
 <%= render "articles/card", article: article %>
 <% end %>
 </section>
+
+</div>

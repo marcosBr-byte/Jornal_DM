@@ -3,7 +3,7 @@
 <head>
 <%= render "shared/head" %>
 </head>
-<body data-controller="theme" class="m-0 bg-white font-sans text-dm-ink antialiased dark:bg-[#0d1d2b] dark:text-[#e8eff4] [&_*]:box-border [&_button]:cursor-pointer [&_button]:font-[inherit] [&_input]:font-[inherit] [&_select]:font-[inherit] [&_textarea]:font-[inherit] [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-4 [&_a]:focus-visible:outline-[#79a9c7] motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:transition-none">
+<body data-environment="<%= current_environment %>" data-controller="theme form-validation live-updates" class="m-0 bg-white font-sans text-dm-ink antialiased dark:bg-[#0d1d2b] dark:text-[#e8eff4] [&_*]:box-border [&_button]:cursor-pointer [&_button]:font-[inherit] [&_input]:font-[inherit] [&_select]:font-[inherit] [&_textarea]:font-[inherit] [&_a]:focus-visible:outline-2 [&_a]:focus-visible:outline-offset-4 [&_a]:focus-visible:outline-[#79a9c7] motion-reduce:[&_*]:animate-none motion-reduce:[&_*]:transition-none">
 <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:p-3 focus:text-dm-ink">Pular para o conteúdo</a>
 <%= render "shared/header" %>
 <% flash.each do |type,message| %>

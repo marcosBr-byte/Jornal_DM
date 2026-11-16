@@ -1,0 +1,192 @@
+pt-BR:
+  date:
+    abbr_day_names: [dom, seg, ter, qua, qui, sex, sáb]
+    day_names: [domingo, segunda-feira, terça-feira, quarta-feira, quinta-feira, sexta-feira, sábado]
+    abbr_month_names: [~, jan, fev, mar, abr, mai, jun, jul, ago, set, out, nov, dez]
+    month_names: [~, janeiro, fevereiro, março, abril, maio, junho, julho, agosto, setembro, outubro, novembro, dezembro]
+    order: [day, month, year]
+    formats:
+      default: '%d/%m/%Y'
+      short: '%d/%m'
+      long: '%d de %B de %Y'
+  time:
+    am: manhã
+    pm: tarde
+    formats:
+      default: '%d/%m/%Y às %H:%M'
+      short: '%d/%m/%Y %H:%M'
+      long: '%d de %B de %Y às %H:%M'
+  number:
+    format:
+      delimiter: '.'
+      separator: ','
+      precision: 3
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      format:
+        delimiter: '.'
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: '%n %u'
+        units:
+          byte:
+            one: byte
+            other: bytes
+          kb: KB
+          mb: MB
+          gb: GB
+          tb: TB
+          pb: PB
+          eb: EB
+  errors:
+    format: '%{attribute} %{message}'
+    messages:
+      accepted: deve ser aceito
+      blank: não pode ficar em branco
+      present: deve ficar em branco
+      confirmation: não corresponde à confirmação
+      empty: não pode ficar vazio
+      equal_to: deve ser igual a %{count}
+      even: deve ser par
+      exclusion: não está disponível
+      greater_than: deve ser maior que %{count}
+      greater_than_or_equal_to: deve ser maior ou igual a %{count}
+      in: deve estar em %{count}
+      inclusion: não é uma opção válida
+      invalid: não é válido
+      less_than: deve ser menor que %{count}
+      less_than_or_equal_to: deve ser menor ou igual a %{count}
+      model_invalid: 'Não foi possível salvar: %{errors}'
+      not_a_number: deve ser um número
+      not_an_integer: deve ser um número inteiro
+      odd: deve ser ímpar
+      other_than: deve ser diferente de %{count}
+      required: é obrigatório
+      taken: já está em uso
+      already_confirmed: já foi confirmado
+      not_found: não foi encontrado
+      not_locked: não está bloqueado
+      expired: expirou. Solicite um novo link.
+      too_long:
+        one: deve ter no máximo 1 caractere
+        other: deve ter no máximo %{count} caracteres
+      too_short:
+        one: deve ter pelo menos 1 caractere
+        other: deve ter pelo menos %{count} caracteres
+      wrong_length:
+        one: deve ter 1 caractere
+        other: deve ter %{count} caracteres
+      not_saved:
+        one: 'Não foi possível salvar: corrija o erro indicado.'
+        other: 'Não foi possível salvar: corrija os %{count} erros indicados.'
+  activerecord:
+    models:
+      article: notícia
+      user: usuário
+      comment: comentário
+      category: categoria
+      event: evento
+      photo_submission: fotografia
+      site_setting: configuração
+    attributes:
+      user:
+        email: E-mail
+        password: Senha
+        password_confirmation: Confirmação da senha
+        current_password: Senha atual
+        reset_password_token: Link de recuperação
+        confirmation_token: Link de confirmação
+        unlock_token: Link de desbloqueio
+        editor_environment: Ambiente do editor
+      article:
+        title: Título
+        summary: Resumo
+        body: Conteúdo
+        author: Autor
+        category: Categoria
+        environment: Ambiente
+        cover: Capa
+        published_at: Data de publicação
+      comment:
+        name: Nome
+        body: Comentário
+        status: Situação
+        article: Notícia
+      event:
+        title: Nome do evento
+        starts_at: Data e horário
+        location: Local
+        description: Descrição
+        category: Categoria
+        environment: Ambiente
+      category:
+        name: Nome
+        environment: Ambiente
+      photo_submission:
+        image: Fotografia
+        contributor: Colaborador
+        caption: Legenda
+        album: Álbum
+        environment: Ambiente
+        article: Notícia
+        event: Evento
+        status: Situação
+    errors:
+      messages:
+        record_invalid: 'Não foi possível salvar: %{errors}'
+        restrict_dependent_destroy:
+          has_many: Não pode ser excluído porque possui registros relacionados
+          has_one: Não pode ser excluído porque possui um registro relacionado
+  helpers:
+    select:
+      prompt: Selecione uma opção
+    submit:
+      create: Criar %{model}
+      update: Salvar alterações
+      submit: Salvar %{model}
+  devise:
+    failure:
+      already_authenticated: Você já está conectado.
+      inactive: Sua conta ainda não foi ativada.
+      invalid: Usuário ou senha inválidos. Confira os dados e tente novamente.
+      last_attempt: Resta uma tentativa antes do bloqueio temporário da conta.
+      locked: Sua conta foi bloqueada temporariamente por tentativas repetidas. Aguarde 30 minutos antes de tentar novamente.
+      not_found_in_database: Usuário ou senha inválidos. Confira os dados e tente novamente.
+      timeout: Sua sessão expirou. Entre novamente para continuar.
+      unauthenticated: Entre com seu usuário e senha para acessar o painel.
+      unconfirmed: Confirme sua conta antes de continuar.
+    sessions:
+      signed_in: Acesso realizado com sucesso.
+      signed_out: Você saiu do sistema com segurança.
+      already_signed_out: Sua sessão já foi encerrada.
+    passwords:
+      no_token: Abra o link de recuperação enviado para seu e-mail para alterar a senha.
+      send_instructions: As instruções para recuperar a senha foram enviadas ao seu e-mail.
+      send_paranoid_instructions: Se o e-mail estiver cadastrado, você receberá as instruções de recuperação.
+      updated: Sua senha foi alterada com sucesso. Você já está conectado.
+      updated_not_active: Sua senha foi alterada com sucesso.
+    unlocks:
+      send_instructions: As instruções para desbloquear sua conta foram enviadas ao seu e-mail.
+      send_paranoid_instructions: Se a conta existir, você receberá as instruções de desbloqueio.
+      unlocked: Sua conta foi desbloqueada. Entre para continuar.
+    confirmations:
+      confirmed: Sua conta foi confirmada com sucesso.
+      send_instructions: As instruções de confirmação foram enviadas ao seu e-mail.
+      send_paranoid_instructions: Se o e-mail estiver cadastrado, você receberá as instruções de confirmação.
+    omniauth_callbacks:
+      failure: 'Não foi possível entrar com %{kind}: %{reason}.'
+      success: Acesso realizado com sucesso com %{kind}.
+    mailer:
+      confirmation_instructions:
+        subject: Confirme sua conta no Jornal DM
+      reset_password_instructions:
+        subject: Recuperação de senha — Jornal DM
+      unlock_instructions:
+        subject: Desbloqueio de conta — Jornal DM
+      email_changed:
+        subject: E-mail da conta alterado — Jornal DM
+      password_change:
+        subject: Senha alterada — Jornal DM

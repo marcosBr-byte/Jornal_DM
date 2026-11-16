@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_13_200015) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_16_095000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_200015) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "article_readings", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.string "visitor_digest", null: false
+    t.date "read_on", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id", "visitor_digest", "read_on"], name: "index_unique_daily_article_reading", unique: true
+    t.index ["article_id"], name: "index_article_readings_on_article_id"
+  end
+
   create_table "articles", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", limit: 120, null: false
@@ -56,10 +66,92 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_200015) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "body_format", default: 0, null: false
+    t.string "environment", default: "dm", null: false
+    t.bigint "reads_count", default: 0, null: false
+    t.index ["environment", "reads_count"], name: "index_articles_on_environment_and_reads_count"
+    t.index ["environment", "status", "published_at"], name: "index_articles_on_environment_and_status_and_published_at"
     t.index ["status", "featured", "published_at"], name: "index_articles_on_status_and_featured_and_published_at"
     t.index ["user_id"], name: "index_articles_on_user_id"
     t.check_constraint "body_format = ANY (ARRAY[0, 1])", name: "articles_valid_body_format"
+    t.check_constraint "environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text])", name: "articles_environment"
+    t.check_constraint "reads_count >= 0", name: "articles_nonnegative_reads"
     t.check_constraint "status = ANY (ARRAY[0, 1])", name: "articles_valid_status"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "environment", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment", "name"], name: "index_categories_on_environment_and_name", unique: true
+    t.check_constraint "environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text])", name: "categories_environment"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.string "name", limit: 80
+    t.text "body", null: false
+    t.string "status", default: "approved", null: false
+    t.integer "reports_count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id", "status", "created_at"], name: "index_comments_on_article_id_and_status_and_created_at"
+    t.index ["article_id"], name: "index_comments_on_article_id"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'approved'::character varying::text, 'rejected'::character varying::text])", name: "comments_status"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "environment", default: "dm", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "starts_at", null: false
+    t.string "location", null: false
+    t.string "category"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment", "starts_at"], name: "index_events_on_environment_and_starts_at"
+    t.check_constraint "environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text])", name: "events_environment"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "article_id", null: false
+    t.string "visitor_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id", "visitor_digest"], name: "index_likes_on_article_id_and_visitor_digest", unique: true
+    t.index ["article_id"], name: "index_likes_on_article_id"
+  end
+
+  create_table "photo_submissions", force: :cascade do |t|
+    t.string "environment", default: "dm", null: false
+    t.string "contributor", limit: 80
+    t.string "caption", limit: 220
+    t.string "album", limit: 120
+    t.string "status", default: "pending", null: false
+    t.bigint "original_bytes"
+    t.bigint "optimized_bytes"
+    t.integer "width"
+    t.integer "height"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "article_id"
+    t.string "fingerprint"
+    t.bigint "event_id"
+    t.index ["article_id"], name: "index_photo_submissions_on_article_id"
+    t.index ["environment", "fingerprint"], name: "index_photo_submissions_on_environment_and_fingerprint", unique: true
+    t.index ["environment", "status", "created_at"], name: "idx_on_environment_status_created_at_222606f649"
+    t.index ["event_id"], name: "index_photo_submissions_on_event_id"
+    t.check_constraint "environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text])", name: "photos_environment"
+    t.check_constraint "status::text = ANY (ARRAY['pending'::character varying::text, 'approved'::character varying::text, 'rejected'::character varying::text, 'published'::character varying::text])", name: "photos_status"
+  end
+
+  create_table "site_settings", force: :cascade do |t|
+    t.string "environment", null: false
+    t.boolean "uploads_enabled", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["environment"], name: "index_site_settings_on_environment", unique: true
+    t.check_constraint "environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text])", name: "site_settings_environment"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -253,14 +345,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_13_200015) do
     t.datetime "locked_at"
     t.string "provider"
     t.string "uid"
+    t.string "editor_environment"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.check_constraint "editor_environment IS NULL OR (editor_environment::text = ANY (ARRAY['dm'::character varying::text, 'fect'::character varying::text]))", name: "users_environment"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "article_readings", "articles"
   add_foreign_key "articles", "users"
+  add_foreign_key "comments", "articles"
+  add_foreign_key "likes", "articles"
+  add_foreign_key "photo_submissions", "articles", on_delete: :nullify
+  add_foreign_key "photo_submissions", "events", on_delete: :nullify
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

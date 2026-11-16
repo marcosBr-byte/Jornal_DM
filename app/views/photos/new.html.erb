@@ -1,0 +1,14 @@
+<% content_for :title, "Enviar fotografias | #{environment_name}" %>
+<section class="dm-wrap dm-section" data-controller="photo-upload"><span class="dm-eyebrow"><%= environment_name %></span><h1>Seu olhar faz parte da nossa história.</h1><p>Envie até 8 fotografias JPEG, PNG ou WebP, com até 10 MB cada. Todas passam por avaliação antes de aparecer no site.</p>
+<%= form_with url: request.path, multipart: true, class: "dm-form", data: {action: "submit->photo-upload#submit"} do |f| %>
+<div class="dm-actions"><button type="button" class="dm-button" data-action="photo-upload#camera">Tirar fotografia agora</button><button type="button" class="dm-button" data-action="photo-upload#gallery">Selecionar fotografias da galeria</button></div>
+<input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" data-photo-upload-target="camera" data-action="change->photo-upload#select" hidden>
+<input type="file" accept="image/jpeg,image/png,image/webp" multiple data-photo-upload-target="gallery" data-action="change->photo-upload#select" hidden>
+<div class="dm-preview" data-photo-upload-target="preview"></div>
+<%= f.label :contributor, "Identificação (opcional)" %><%= f.text_field :contributor, maxlength: 80, placeholder: "Como gostaria de ser identificado?" %>
+<div hidden aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+<label><%= f.check_box :consent, required: true %> Confirmo que tenho autorização para enviar estas imagens para avaliação editorial. A publicação de imagens de estudantes depende da verificação de autorização pela escola.</label>
+<%= f.submit "Confirmar envio", class: "dm-button", data: {photo_upload_target: "submit"} %>
+<progress max="100" value="0" data-photo-upload-target="progress" hidden aria-label="Progresso do envio"></progress><p data-photo-upload-target="message" role="status"></p><% end %>
+<div class="dm-panel"><h2>Abrir no celular</h2><%= image_tag "#{current_environment == "fect" ? "/fect" : ""}/envio-qr", alt: "QR Code para enviar fotografias ao #{environment_name}", width: 246, height: 246, loading: "lazy" %><p><%= request.base_url %><%= request.path %></p></div>
+<p>Uma etiqueta NFC deve abrir este endereço HTTPS no navegador. A câmera só é acionada ao tocar no botão acima.</p><p><%= link_to "Ver galeria publicada →", current_environment == "fect" ? "/fect/galeria" : "/galeria", class: "dm-link" %></p></section>

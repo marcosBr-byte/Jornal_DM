@@ -1,0 +1,10 @@
+<div id="gallery-content" data-live-region>
+<% content_for :title, "Galeria | #{environment_name}" %>
+<section class="dm-wrap dm-section" data-controller="lightbox"><span class="dm-eyebrow"><%= environment_name %></span><h1>Galeria de fotografias</h1>
+<%= form_with url: request.path, method: :get, class: "dm-form" do |f| %><%= f.label :album, "Álbum" %><%= f.select :album, [["Todos os álbuns", ""]] + @albums.map { |album| [album, album] }, selected: params[:album] %><%= f.submit "Filtrar", class: "dm-button" %><% end %>
+<div class="dm-grid"><% @photos.each do |photo| %><figure class="dm-panel"><button type="button" data-action="lightbox#open" data-src="<%= current_environment == "fect" ? "/fect" : "" %>/fotografias/<%= photo.id %>" data-caption="<%= photo.caption %>" aria-label="Ampliar fotografia"><%= image_tag "#{current_environment == "fect" ? "/fect" : ""}/fotografias/#{photo.id}", alt: photo.caption.presence || "Fotografia da comunidade", width: photo.width, height: photo.height, loading: "lazy", srcset: "#{current_environment == "fect" ? "/fect" : ""}/fotografias/#{photo.id}?size=640 640w, #{current_environment == "fect" ? "/fect" : ""}/fotografias/#{photo.id}?size=1200 1200w", sizes: "(max-width: 640px) 100vw, 400px", class: "dm-photo" %></button><figcaption><%= photo.caption %><% if photo.album.present? %><p><%= photo.album %></p><% end %></figcaption></figure><% end %></div>
+<% if @photos.empty? %><p class="dm-panel">As fotografias aprovadas e publicadas pela equipe aparecerão aqui.</p><% end %>
+<div class="dm-actions"><%= link_to "← Anterior", request.query_parameters.merge(page: @page - 1), class: "dm-link" if @page > 1 %><%= link_to "Próxima →", request.query_parameters.merge(page: @page + 1), class: "dm-link" if @photos.size == 24 %></div>
+<dialog data-lightbox-target="dialog"><button class="dm-button" type="button" data-action="lightbox#close">Fechar ×</button><img data-lightbox-target="image" alt=""><p data-lightbox-target="caption"></p></dialog></section>
+
+</div>

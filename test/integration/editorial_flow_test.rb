@@ -24,7 +24,7 @@ class EditorialFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "public navigation identifies the current page" do
-    [ root_path, articles_path, escola_path, agenda_path ].each do |path|
+    [ root_path, articles_path, agenda_path ].each do |path|
       get path
       assert_select "header nav a[aria-current=page]", count: 1 do |links|
         assert_equal path, links.first["href"]

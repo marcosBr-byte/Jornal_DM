@@ -1,4 +1,4 @@
-<section id="managePanel" class="mb-5 scroll-mt-24 border border-[#e5ebf0] bg-white px-[27px] py-[25px] dark:border-[#2a4559] dark:bg-[#172f43] max-sm:px-4">
+<section id="managePanel" data-live-region class="mb-5 scroll-mt-24 border border-[#e5ebf0] bg-white px-[27px] py-[25px] dark:border-[#2a4559] dark:bg-[#172f43] max-sm:px-4">
   <div class="mb-[23px] flex items-center justify-between gap-4 max-sm:flex-wrap">
     <div>
       <div class="flex items-center gap-[9px] text-[9px] font-extrabold tracking-[2px] text-[#64829b]"><span class="h-0.5 w-[22px] bg-[#6c96b2]"></span> CONTEÚDO DO PORTAL</div>
@@ -15,7 +15,7 @@
         </div>
         <div class="min-w-0 flex-1">
           <b class="block truncate text-[11px]"><%= article.title %></b>
-          <small class="<%= class_names("mt-[5px] block text-[8px]", article.draft? ? "text-[#a27a36] dark:text-[#d6b66d]" : "text-[#8d9aa5] dark:text-[#9db0be]") %>"><%= article.draft? ? "Rascunho" : "Publicada" %> · <%= article.category %></small>
+          <small class="<%= class_names("mt-[5px] block text-[8px]", article.draft? ? "text-[#a27a36] dark:text-[#d6b66d]" : "text-[#8d9aa5] dark:text-[#9db0be]") %>"><%= article.draft? ? "Rascunho" : "Publicada" %> · <%= article.category %> · <%= article.reads_count %> leituras</small>
         </div>
         <div class="flex flex-wrap gap-1.5 max-sm:w-full max-sm:justify-end">
           <%= link_to "Editar", edit_admin_article_path(article), class: "rounded-[2px] border border-[#e3eaf0] bg-white px-2.5 py-2 text-[8px] text-[#60798c] no-underline dark:border-[#385368] dark:bg-[#203b50] dark:text-[#d5e2ea]" %>

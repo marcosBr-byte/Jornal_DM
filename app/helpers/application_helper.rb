@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def editorial_status_label(status)
+    { "pending" => "Aguardando análise", "approved" => "Aprovado", "rejected" => "Rejeitado", "published" => "Publicado", "draft" => "Rascunho" }.fetch(status, status)
+  end
+
   def article_editor_value(article)
     # HTML stored in a hidden input must be attribute-escaped once more.
     String.new(article_body_markup(article))
@@ -9,7 +13,7 @@ module ApplicationHelper
   end
 
   def article_prose_classes
-    "break-words text-[13px] leading-[1.95] text-[#4d6071] dark:text-[#c4d1db] [&_p]:my-3 [&_div]:min-h-[1em] [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:font-display [&_h2]:text-xl [&_h2]:leading-snug [&_h2]:font-extrabold [&_h3]:mt-5 [&_h3]:mb-2 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h4]:font-bold [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_s]:line-through [&_del]:line-through [&_u]:underline [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 [&_blockquote]:my-4 [&_blockquote]:border-l-[3px] [&_blockquote]:border-[#7196b0] [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-[#315e7f] [&_a]:underline [&_a]:underline-offset-2 dark:[&_a]:text-[#9fc5df] [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-dm-pale [&_pre]:p-4 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:whitespace-pre-wrap dark:[&_pre]:bg-[#203b50] [&_code]:font-mono"
+    "break-words text-[16px] leading-[1.95] text-[#4d6071] dark:text-[#c4d1db] [&_p]:my-3 [&_div]:min-h-[1em] [&_h2]:mt-6 [&_h2]:mb-3 [&_h2]:font-display [&_h2]:text-xl [&_h2]:leading-snug [&_h2]:font-extrabold [&_h3]:mt-5 [&_h3]:mb-2 [&_h3]:font-display [&_h3]:text-lg [&_h3]:font-bold [&_h4]:font-bold [&_strong]:font-bold [&_b]:font-bold [&_em]:italic [&_i]:italic [&_s]:line-through [&_del]:line-through [&_u]:underline [&_ul]:my-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 [&_blockquote]:my-4 [&_blockquote]:border-l-[3px] [&_blockquote]:border-[#7196b0] [&_blockquote]:pl-4 [&_blockquote]:italic [&_a]:text-[#315e7f] [&_a]:underline [&_a]:underline-offset-2 dark:[&_a]:text-[#9fc5df] [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded [&_pre]:bg-dm-pale [&_pre]:p-4 [&_pre]:font-mono [&_pre]:text-xs [&_pre]:whitespace-pre-wrap dark:[&_pre]:bg-[#203b50] [&_code]:font-mono"
   end
 
   def editor_toolbar_button_classes

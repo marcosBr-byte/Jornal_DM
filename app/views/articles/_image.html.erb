@@ -1,5 +1,1 @@
-<% if article.cover.attached? %>
-<%= image_tag cover_article_path(article), alt: article.title, loading: "lazy" %>
-<% else %>
-<div class="grid h-full place-items-center font-display text-[45px] font-extrabold text-[#a4b9c9]">DM</div>
-<% end %>
+<% if article.cover.attached? %><%= image_tag editorial_cover_path(article), alt: article.title, loading: local_assigns[:priority] ? "eager" : "lazy", fetchpriority: local_assigns[:priority] ? "high" : "auto", width: 1200, height: 800, srcset: "#{editorial_cover_path(article, size: 640)} 640w, #{editorial_cover_path(article, size: 1200)} 1200w", sizes: "(max-width: 640px) 100vw, 600px" %><% else %><div class="news-cover-placeholder" aria-hidden="true"><span><%= article.category %></span><b><%= article.environment == "fect" ? "FECT" : "Jornal DM" %></b><small>INFORMAÇÃO QUE APROXIMA</small></div><% end %>
